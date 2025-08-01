@@ -11,27 +11,29 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.Arrays;
 
 @Configuration
-public class CorsConfig implements WebMvcConfigurer {
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
-                .allowedOrigins("http://localhost:3000")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(true);
-    }
+public class CorsConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        
+        // Lista de orígenes permitidos (tu frontend local y el de Vercel)
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:3000",
+                "https://ferretechria-kx1ihpxw2-cucr1605-gmailcoms-projects.vercel.app"
+        ));
+        
+        // Métodos HTTP permitidos
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        
+        // Cabeceras HTTP permitidas
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        
+        // Permitir credenciales (cookies, etc.)
         configuration.setAllowCredentials(true);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", configuration); // Aplicar a todas las rutas
         return source;
     }
 }
