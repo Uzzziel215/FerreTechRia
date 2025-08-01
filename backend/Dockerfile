@@ -9,6 +9,9 @@ COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 
+# Grant execute permission to the mvnw script
+RUN chmod +x ./mvnw
+
 # Download project dependencies
 # This layer is cached, so it will only be re-run when pom.xml changes
 RUN ./mvnw dependency:go-offline
