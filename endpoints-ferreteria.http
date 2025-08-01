@@ -1,0 +1,183 @@
+### PRODUCTOS
+GET http://localhost:8080/api/productos
+
+### Obtener producto por ID
+GET http://localhost:8080/api/productos/1
+
+### Crear producto
+POST http://localhost:8080/api/productos
+Content-Type: application/json
+
+{
+  "nombre": "Martillo",
+  "descripcion": "Martillo de acero",
+  "precio": 120.5,
+  "stock": 10,
+  "stockMinimo": 2,
+  "codigoBarras": "123456789",
+  "proveedor": "FerrePro",
+  "categoria": "Herramientas"
+}
+
+### Actualizar producto
+PUT http://localhost:8080/api/productos/1
+Content-Type: application/json
+
+{
+  "nombre": "Martillo reforzado",
+  "descripcion": "Martillo de acero reforzado",
+  "precio": 150.0,
+  "stock": 15,
+  "stockMinimo": 3,
+  "codigoBarras": "1234567890",
+  "proveedor": "FerrePro",
+  "categoria": "Herramientas"
+}
+
+### Eliminar producto
+DELETE http://localhost:8080/api/productos/1
+
+### Buscar productos por término
+GET http://localhost:8080/api/productos/buscar?termino=martillo
+
+### Productos por categoría
+GET http://localhost:8080/api/productos/categoria/Herramientas
+
+### Productos con stock bajo
+GET http://localhost:8080/api/productos/stock-bajo
+
+### Listar categorías
+GET http://localhost:8080/api/productos/categorias
+
+### Listar proveedores
+GET http://localhost:8080/api/productos/proveedores
+
+### Actualizar stock (restar)
+PUT http://localhost:8080/api/productos/1/stock?cantidad=2
+
+### Aumentar stock
+PUT http://localhost:8080/api/productos/1/aumentar-stock?cantidad=5
+
+
+### CLIENTES
+GET http://localhost:8080/api/clientes
+
+### Obtener cliente por ID
+GET http://localhost:8080/api/clientes/1
+
+### Crear cliente
+POST http://localhost:8080/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Juan Pérez",
+  "telefono": "5551234567",
+  "email": "juan@email.com",
+  "descuento": 10.0
+}
+
+### Actualizar cliente
+PUT http://localhost:8080/api/clientes/1
+Content-Type: application/json
+
+{
+  "nombre": "Juan Pérez",
+  "telefono": "5551234567",
+  "email": "juan@email.com",
+  "descuento": 15.0
+}
+
+### Eliminar cliente
+DELETE http://localhost:8080/api/clientes/1
+
+### Buscar clientes por término
+GET http://localhost:8080/api/clientes/buscar?termino=juan
+
+### Clientes con descuento
+GET http://localhost:8080/api/clientes/con-descuento
+
+### Buscar cliente por email
+GET http://localhost:8080/api/clientes/email/juan@email.com
+
+
+### USUARIOS
+GET http://localhost:8080/api/usuarios
+
+### Obtener usuario por ID
+GET http://localhost:8080/api/usuarios/1
+
+### Crear usuario
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+  {
+    "nombre": "admin",
+    "contraseña": "admin123",
+    "rol": "administrador"
+  }
+
+### Actualizar usuario
+PUT http://localhost:8080/api/usuarios/1
+Content-Type: application/json
+
+{
+  "nombre": "admin",
+  "contraseña": "admin123",
+  "rol": "administrador"
+}
+
+### Eliminar usuario
+DELETE http://localhost:8080/api/usuarios/1
+
+### Login usuario
+POST http://localhost:8080/api/usuarios/login
+Content-Type: application/json
+
+{
+  "nombre": "admin",
+  "contraseña": "admin123"
+}
+
+### Verificar permisos
+GET http://localhost:8080/api/usuarios/1/permisos/vender
+
+
+### VENTAS
+GET http://localhost:8080/api/ventas
+
+### Obtener venta por ID
+GET http://localhost:8080/api/ventas/1
+
+### Procesar venta
+POST http://localhost:8080/api/ventas
+Content-Type: application/json
+
+{
+  "cliente": {"id": 1},
+  "usuario": {"id": 1},
+  "detalles": [
+    {
+      "producto": {"id": 1},
+      "cantidad": 2,
+      "precioUnitario": 120.5
+    }
+  ]
+}
+
+### Ventas por rango de fechas
+GET http://localhost:8080/api/ventas/fecha?inicio=2025-07-01T00:00:00&fin=2025-07-31T23:59:59
+
+### Ventas del día
+GET http://localhost:8080/api/ventas/hoy
+
+### Ventas por cliente
+GET http://localhost:8080/api/ventas/cliente/1
+
+### Ventas por usuario
+GET http://localhost:8080/api/ventas/usuario/1
+
+### Reporte diario
+GET http://localhost:8080/api/ventas/reporte/diario
+
+### Generar ticket de venta
+GET http://localhost:8080/api/ventas/1/ticket
