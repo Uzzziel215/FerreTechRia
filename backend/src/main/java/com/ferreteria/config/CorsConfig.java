@@ -22,7 +22,7 @@ public class CorsConfig {
                 "http://localhost:3000",
                 "https://ferretechria.vercel.app",
                 "https://ferretechria-git-main-cucr1605-gmailcoms-projects.vercel.app",
-                "https://ferretechria-kx1ihpxw2-cucr1605-gmailcoms-projects.vercel.app"
+                "https://ferretechria-b6vd8x8vn-cucr1605-gmailcoms-projects.vercel.app"
         ));
         
         // Métodos HTTP permitidos
