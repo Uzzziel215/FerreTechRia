@@ -16,11 +16,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     List<Usuario> findByActivoTrue();
 
     // Buscar por nombre de usuario
-    Optional<Usuario> findByNombreAndActivoTrue(String nombre);
+    Optional<Usuario> findByNombre(String nombre);
 
-    // Autenticación
-    @Query("SELECT u FROM Usuario u WHERE u.nombre = :nombre AND u.contraseña = :contraseña AND u.activo = true")
-    Optional<Usuario> findByNombreAndContraseña(@Param("nombre") String nombre, @Param("contraseña") String contraseña);
+    Optional<Usuario> findByNombreAndActivoTrue(String nombre);
 
     // Buscar por rol
     List<Usuario> findByRolAndActivoTrue(Usuario.RolUsuario rol);

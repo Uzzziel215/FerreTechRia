@@ -5,6 +5,7 @@ import com.ferreteria.model.UsuarioActualizacionDTO;
 import com.ferreteria.model.UsuarioCreacionDTO;
 import com.ferreteria.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<Usuario> obtenerTodosLosUsuarios() {
         return usuarioRepository.findAll();
@@ -32,7 +36,7 @@ public class UsuarioService {
     public Usuario crearUsuario(UsuarioCreacionDTO usuarioDTO) {
         Usuario usuario = new Usuario();
         usuario.setNombre(usuarioDTO.getNombre());
-        usuario.setContraseña(usuarioDTO.getContraseña());
+        usuario.setContraseña(passwordEncoder.encode(usuarioDTO.getContraseña()));
         usuario.setRol(usuarioDTO.getRol());
         return guardarUsuario(usuario);
     }
@@ -45,7 +49,7 @@ public class UsuarioService {
             usuarioExistente.setNombre(usuarioDTO.getNombre());
         }
         if (usuarioDTO.getContraseña() != null && !usuarioDTO.getContraseña().isEmpty()) {
-            usuarioExistente.setContraseña(usuarioDTO.getContraseña());
+            usuarioExistente.setContraseña(passwordEncoder.encode(usuarioDTO.getContraseña()));
         }
         if (usuarioDTO.getRol() != null) {
             usuarioExistente.setRol(usuarioDTO.getRol());
@@ -63,7 +67,14 @@ public class UsuarioService {
     }
 
     public Optional<Usuario> autenticar(String nombre, String contraseña) {
-        return usuarioRepository.findByNombreAndContraseña(nombre, contraseña);
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByNombre(nombre);
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            if (passwordEncoder.matches(contraseña, usuario.getContraseña())) {
+                return Optional.of(usuario);
+            }
+        }
+        return Optional.empty();
     }
 
     public boolean verificarPermisos(Long usuarioId, String accion) {
