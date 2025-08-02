@@ -17,9 +17,11 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // Lista de orígenes permitidos (tu frontend local y el de Vercel)
+        // Lista de orígenes permitidos (tu frontend local y todos los de Vercel)
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000",
+                "https://ferretechria.vercel.app",
+                "https://ferretechria-git-main-cucr1605-gmailcoms-projects.vercel.app",
                 "https://ferretechria-kx1ihpxw2-cucr1605-gmailcoms-projects.vercel.app"
         ));
         
