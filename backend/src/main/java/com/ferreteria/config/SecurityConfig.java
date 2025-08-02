@@ -28,9 +28,9 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permit all OPTIONS requests
-                .requestMatchers("/api/usuarios/login").permitAll() // Permit login endpoint
-                .anyRequest().authenticated()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permit all OPTIONS requests for CORS pre-flight
+                .requestMatchers(HttpMethod.POST, "/api/usuarios/login").permitAll() // Permit login endpoint
+                .anyRequest().authenticated() // Secure all other endpoints
             );
 
         return http.build();
