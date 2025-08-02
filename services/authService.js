@@ -1,21 +1,18 @@
-import axios from "axios"
-
-const API_URL = "http://localhost:8080/api"
+import api from './apiConfig';
 
 export const login = async (nombre, contraseña) => {
   try {
-    const response = await axios.post(`${API_URL}/usuarios/login`, {
+    const response = await api.post('/usuarios/login', {
       nombre,
       contraseña,
-    })
-    return response.data
+    });
+    return response.data;
   } catch (error) {
-    if (error.response && error.response.data) {
-      throw new Error(error.response.data.error || "Error de autenticación")
-    }
-    throw new Error("Error de conexión")
+    // The error handling is already done by the interceptor in apiConfig.js
+    // We just need to re-throw the error for the component to catch it.
+    throw error;
   }
-}
+};
 
 export const verificarSesion = () => {
   const usuario = localStorage.getItem("usuario")
