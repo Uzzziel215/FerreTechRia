@@ -29,8 +29,9 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable) // More direct way to disable CSRF
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/api/usuarios/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/usuarios").permitAll() // Allow user creation
                 .requestMatchers("/api/usuarios/**").authenticated()
-                .anyRequest().permitAll() // Temporarily permit others to isolate login
+                .anyRequest().permitAll()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
