@@ -2,15 +2,8 @@ import axios from "axios"
 import { toast } from "react-hot-toast"
 
 // Configuración base de axios
-let API_URL = "http://localhost:8080/api"; // URL para desarrollo local
-
-// Si el entorno es producción (como en Vercel), usamos la URL de Render.
-if (process.env.NODE_ENV === 'production') {
-  API_URL = "https://ferretechria.onrender.com/api";
-}
-
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: "http://localhost:8080/api",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
