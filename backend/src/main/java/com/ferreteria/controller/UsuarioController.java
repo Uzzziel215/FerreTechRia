@@ -1,16 +1,12 @@
 package com.ferreteria.controller;
 
-import com.ferreteria.model.*;
-import com.ferreteria.service.CustomUserDetailsService;
+import com.ferreteria.model.Usuario;
+import com.ferreteria.model.UsuarioCreacionDTO;
+import com.ferreteria.model.UsuarioActualizacionDTO;
 import com.ferreteria.service.UsuarioService;
-import com.ferreteria.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -25,15 +21,6 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
 
     @GetMapping
     public ResponseEntity<List<Usuario>> obtenerTodosLosUsuarios() {
@@ -79,19 +66,22 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginRequest loginRequest) throws Exception {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-            );
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
+    public ResponseEntity<?> autenticar(@RequestBody Map<String, String> credenciales) {
+        String nombre = credenciales.get("nombre");
+        String contraseña = credenciales.get("contraseña");
+
+        Optional<Usuario> usuario = usuarioService.autenticar(nombre, contraseña);
+        
+        if (usuario.isPresent()) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("usuario", usuario.get());
+            response.put("mensaje", "Autenticación exitosa");
+            return ResponseEntity.ok(response);
+        } else {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Credenciales inválidas");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
         }
-
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
-        final String jwt = jwtUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new LoginResponse(jwt));
     }
 
     @GetMapping("/{id}/permisos/{accion}")

@@ -66,6 +66,17 @@ public class UsuarioService {
         }
     }
 
+    public Optional<Usuario> autenticar(String nombre, String contraseña) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByNombreAndActivoTrue(nombre);
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            if (passwordEncoder.matches(contraseña, usuario.getContraseña())) {
+                return Optional.of(usuario);
+            }
+        }
+        return Optional.empty();
+    }
+
     public boolean verificarPermisos(Long usuarioId, String accion) {
         Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
         return usuario.map(u -> u.tienePermiso(accion)).orElse(false);

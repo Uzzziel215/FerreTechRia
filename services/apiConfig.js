@@ -13,19 +13,11 @@ const api = axios.create({
 // Interceptor para requests
 api.interceptors.request.use(
   (config) => {
-    // Recuperar el token de localStorage
-    const token = localStorage.getItem("token");
-
-    // Si el token existe, añadirlo a los headers
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
     // Mostrar loading si es necesario
     if (config.showLoading !== false) {
       // Aquí podrías mostrar un loading global
     }
-    return config;
+    return config
   },
   (error) => {
     return Promise.reject(error)
