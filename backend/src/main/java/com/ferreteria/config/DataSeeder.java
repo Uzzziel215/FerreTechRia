@@ -31,13 +31,12 @@ public class DataSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Solo ejecutar el seeder si el usuario 'admin' no existe.
-        if (usuarioRepository.findByUsuario("admin").isEmpty()) {
+        if (usuarioRepository.findByNombre("admin").isEmpty()) {
             // Crear usuario administrador
             Usuario admin = new Usuario();
-            admin.setNombre("Administrador");
-            admin.setUsuario("admin");
-            admin.setContrasena(passwordEncoder.encode("admin123"));
-            admin.setRol(Usuario.RolUsuario.ADMINISTRADOR);
+            admin.setNombre("admin");
+            admin.setContraseña(passwordEncoder.encode("admin123"));
+            admin.setRol(Usuario.RolUsuario.administrador);
             usuarioRepository.save(admin);
 
             // Poblar clientes solo si la tabla está vacía
