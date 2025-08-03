@@ -19,8 +19,8 @@ public class DetalleVentaResponseDTO {
         dto.setId(detalle.getId());
         dto.setVentaId(detalle.getVentaId());
         dto.setCantidad(detalle.getCantidad());
-        dto.setPrecioUnitario(BigDecimal.valueOf(detalle.getPrecioUnitario()));
-        dto.setSubtotal(BigDecimal.valueOf(detalle.getSubtotal()));
+        dto.setPrecioUnitario(detalle.getPrecioUnitario());
+        dto.setSubtotal(detalle.getSubtotal());
         dto.setFechaCreacion(detalle.getFechaCreacion());
         
         // Mapear producto si existe
@@ -52,4 +52,4 @@ public class DetalleVentaResponseDTO {
 
     public LocalDateTime getFechaCreacion() { return fechaCreacion; }
     public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
-} 
+}

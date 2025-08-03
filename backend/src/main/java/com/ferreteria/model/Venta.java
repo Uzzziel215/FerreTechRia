@@ -97,7 +97,7 @@ public class Venta {
 
     public void calcularTotal() {
         BigDecimal subtotal = detalles.stream()
-                .map(detalle -> BigDecimal.valueOf(detalle.getSubtotal()))
+                .map(DetalleVenta::getSubtotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         
         BigDecimal descuento = BigDecimal.ZERO;
