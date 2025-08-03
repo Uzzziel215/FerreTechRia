@@ -16,7 +16,7 @@ public class SeedController {
     private SeedService seedService;
 
     @PostMapping("/poblar-base")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public ResponseEntity<String> poblarBase() {
         try {
             seedService.poblarBaseDeDatos();
