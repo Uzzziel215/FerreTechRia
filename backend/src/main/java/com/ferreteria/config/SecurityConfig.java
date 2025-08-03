@@ -31,8 +31,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                 // Permitir peticiones OPTIONS (preflight) sin autenticación
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                // Permitir acceso público al endpoint de login
-                .requestMatchers("/api/usuarios/login").permitAll()
+                // Permitir acceso público al endpoint de login y creación de usuarios
+                .requestMatchers("/api/usuarios/login", "/api/usuarios").permitAll()
                 // Requerir autenticación para cualquier otra petición
                 .anyRequest().authenticated()
             )
