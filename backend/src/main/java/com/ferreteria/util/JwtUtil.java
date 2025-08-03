@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,8 +22,7 @@ public class JwtUtil {
     @Value("${jwt.expiration:86400000}") // 24 hours
     private long expiration;
 
-    @PostConstruct
-    public void init() {
+    public JwtUtil() {
         this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
