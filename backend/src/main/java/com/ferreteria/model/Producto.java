@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,8 +28,8 @@ public class Producto {
     
     @NotNull(message = "El precio es obligatorio")
     @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
-    @Column(name = "precio", nullable = false)
-    private Double precio;
+    @Column(name = "precio", nullable = false, precision = 10, scale = 2)
+    private BigDecimal precio;
     
     @NotNull(message = "El stock es obligatorio")
     @Min(value = 0, message = "El stock no puede ser negativo")
@@ -65,7 +66,7 @@ public class Producto {
     // Constructores
     public Producto() {}
 
-    public Producto(String nombre, String descripcion, Double precio, 
+    public Producto(String nombre, String descripcion, BigDecimal precio,
                    Integer stock, Integer stockMinimo, String codigoBarras, 
                    String proveedor, String categoria) {
         this.nombre = nombre;
@@ -88,8 +89,8 @@ public class Producto {
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public Double getPrecio() { return precio; }
-    public void setPrecio(Double precio) { this.precio = precio; }
+    public BigDecimal getPrecio() { return precio; }
+    public void setPrecio(BigDecimal precio) { this.precio = precio; }
 
     public Integer getStock() { return stock; }
     public void setStock(Integer stock) { this.stock = stock; }

@@ -54,7 +54,7 @@ public class UsuarioService {
             usuarioExistente.setNombre(usuarioDTO.getNombre());
         }
         if (usuarioDTO.getContraseña() != null && !usuarioDTO.getContraseña().isEmpty()) {
-            usuarioExistente.setContraseña(passwordEncoder.encode(usuarioDTO.getContraseña()));
+            usuarioExistente.setPassword(passwordEncoder.encode(usuarioDTO.getContraseña()));
         }
         if (usuarioDTO.getRol() != null) {
             usuarioExistente.setRol(usuarioDTO.getRol());
@@ -71,11 +71,11 @@ public class UsuarioService {
         }
     }
 
-    public Optional<Usuario> autenticar(String correo, String contraseña) {
+    public Optional<Usuario> autenticar(String correo, String password) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByCorreo(correo);
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
-            if (passwordEncoder.matches(contraseña, usuario.getPassword())) {
+            if (passwordEncoder.matches(password, usuario.getPassword())) {
                 return Optional.of(usuario);
             }
         }
@@ -91,7 +91,7 @@ public class UsuarioService {
         if (usuario.getNombre() == null || usuario.getNombre().trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre de usuario es obligatorio");
         }
-        if (usuario.getContraseña() == null || usuario.getContraseña().trim().isEmpty()) {
+        if (usuario.getPassword() == null || usuario.getPassword().trim().isEmpty()) {
             throw new IllegalArgumentException("La contraseña es obligatoria");
         }
         if (usuario.getRol() == null) {
