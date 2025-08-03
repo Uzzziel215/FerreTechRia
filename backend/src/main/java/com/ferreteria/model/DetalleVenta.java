@@ -3,6 +3,7 @@ package com.ferreteria.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,11 +25,11 @@ public class DetalleVenta {
     @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
     
-    @Column(name = "precio_unitario", nullable = false)
-    private Double precioUnitario;
+    @Column(name = "precio_unitario", nullable = false, precision = 10, scale = 2)
+    private BigDecimal precioUnitario;
     
-    @Column(name = "subtotal", nullable = false)
-    private Double subtotal;
+    @Column(name = "subtotal", nullable = false, precision = 10, scale = 2)
+    private BigDecimal subtotal;
 
     @CreationTimestamp
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
@@ -37,11 +38,11 @@ public class DetalleVenta {
     // Constructores
     public DetalleVenta() {}
 
-    public DetalleVenta(Producto producto, Integer cantidad, Double precioUnitario) {
+    public DetalleVenta(Producto producto, Integer cantidad, BigDecimal precioUnitario) {
         this.producto = producto;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
-        this.subtotal = cantidad.doubleValue() * precioUnitario;
+        this.subtotal = precioUnitario.multiply(new BigDecimal(cantidad));
     }
 
     // Getters y Setters
@@ -60,14 +61,14 @@ public class DetalleVenta {
         calcularSubtotal();
     }
 
-    public Double getPrecioUnitario() { return precioUnitario; }
-    public void setPrecioUnitario(Double precioUnitario) { 
+    public BigDecimal getPrecioUnitario() { return precioUnitario; }
+    public void setPrecioUnitario(BigDecimal precioUnitario) {
         this.precioUnitario = precioUnitario;
         calcularSubtotal();
     }
 
-    public Double getSubtotal() { return subtotal; }
-    public void setSubtotal(Double subtotal) { this.subtotal = subtotal; }
+    public BigDecimal getSubtotal() { return subtotal; }
+    public void setSubtotal(BigDecimal subtotal) { this.subtotal = subtotal; }
 
     public LocalDateTime getFechaCreacion() { return fechaCreacion; }
     public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
@@ -75,7 +76,7 @@ public class DetalleVenta {
     // Métodos de negocio
     public void calcularSubtotal() {
         if (cantidad != null && precioUnitario != null) {
-            this.subtotal = cantidad.doubleValue() * precioUnitario;
+            this.subtotal = precioUnitario.multiply(new BigDecimal(cantidad));
         }
     }
 

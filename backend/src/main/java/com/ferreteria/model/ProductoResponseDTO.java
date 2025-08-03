@@ -24,7 +24,7 @@ public class ProductoResponseDTO {
         dto.setId(producto.getId());
         dto.setNombre(producto.getNombre());
         dto.setDescripcion(producto.getDescripcion());
-        dto.setPrecio(BigDecimal.valueOf(producto.getPrecio()));
+        dto.setPrecio(producto.getPrecio());
         dto.setStock(producto.getStock());
         dto.setStockMinimo(producto.getStockMinimo());
         dto.setCodigoBarras(producto.getCodigoBarras());
@@ -72,4 +72,4 @@ public class ProductoResponseDTO {
 
     public LocalDateTime getFechaActualizacion() { return fechaActualizacion; }
     public void setFechaActualizacion(LocalDateTime fechaActualizacion) { this.fechaActualizacion = fechaActualizacion; }
-} 
+}

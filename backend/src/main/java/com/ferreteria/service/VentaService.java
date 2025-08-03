@@ -144,24 +144,24 @@ public class VentaService {
         for (DetalleVenta detalle : venta.getDetalles()) {
             ticket.append(detalle.getProducto().getNombre()).append("\n");
             ticket.append("  ").append(detalle.getCantidad())
-                  .append(" x $").append(String.format("%.2f", detalle.getPrecioUnitario()))
-                  .append(" = $").append(String.format("%.2f", detalle.getSubtotal())).append("\n");
+                  .append(" x $").append(detalle.getPrecioUnitario().toPlainString())
+                  .append(" = $").append(detalle.getSubtotal().toPlainString()).append("\n");
         }
         
         ticket.append("\n---------------------------------\n");
         
         if (venta.getCliente() != null && venta.getCliente().tieneDescuento()) {
-            double subtotal = venta.getDetalles().stream()
-                    .mapToDouble(DetalleVenta::getSubtotal)
-                    .sum();
-            BigDecimal descuento = venta.getCliente().calcularDescuento(subtotal);
+            BigDecimal subtotal = venta.getDetalles().stream()
+                    .map(DetalleVenta::getSubtotal)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            BigDecimal descuento = venta.getCliente().calcularDescuento(subtotal.doubleValue());
             
-            ticket.append("Subtotal: $").append(String.format("%.2f", subtotal)).append("\n");
+            ticket.append("Subtotal: $").append(subtotal.toPlainString()).append("\n");
             ticket.append("Descuento (").append(venta.getCliente().getDescuento())
-                  .append("%): -$").append(String.format("%.2f", descuento.doubleValue())).append("\n");
+                  .append("%): -$").append(descuento.toPlainString()).append("\n");
         }
         
-        ticket.append("TOTAL: $").append(String.format("%.2f", venta.getTotal().doubleValue())).append("\n");
+        ticket.append("TOTAL: $").append(venta.getTotal().toPlainString()).append("\n");
         ticket.append("\n=================================\n");
         ticket.append("    ¡GRACIAS POR SU COMPRA!\n");
         ticket.append("=================================\n");
