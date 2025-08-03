@@ -18,6 +18,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     // Buscar por nombre de usuario
     Optional<Usuario> findByNombreAndActivoTrue(String nombre);
 
+    // Buscar por nombre de usuario para el seeder
+    Optional<Usuario> findByUsuario(String usuario);
+
     // Buscar por rol
     List<Usuario> findByRolAndActivoTrue(Usuario.RolUsuario rol);
 
