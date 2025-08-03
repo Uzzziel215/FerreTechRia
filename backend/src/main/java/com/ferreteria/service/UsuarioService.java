@@ -28,6 +28,10 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
+    public Optional<Usuario> obtenerUsuarioPorCorreo(String correo) {
+        return usuarioRepository.findByCorreo(correo);
+    }
+
     public Usuario guardarUsuario(Usuario usuario) {
         validarUsuario(usuario);
         return usuarioRepository.save(usuario);
@@ -36,7 +40,8 @@ public class UsuarioService {
     public Usuario crearUsuario(UsuarioCreacionDTO usuarioDTO) {
         Usuario usuario = new Usuario();
         usuario.setNombre(usuarioDTO.getNombre());
-        usuario.setContraseña(passwordEncoder.encode(usuarioDTO.getContraseña()));
+        usuario.setCorreo(usuarioDTO.getCorreo());
+        usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword()));
         usuario.setRol(usuarioDTO.getRol());
         return guardarUsuario(usuario);
     }
@@ -66,11 +71,11 @@ public class UsuarioService {
         }
     }
 
-    public Optional<Usuario> autenticar(String nombre, String contraseña) {
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByNombreAndActivoTrue(nombre);
+    public Optional<Usuario> autenticar(String correo, String contraseña) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByCorreo(correo);
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
-            if (passwordEncoder.matches(contraseña, usuario.getContraseña())) {
+            if (passwordEncoder.matches(contraseña, usuario.getPassword())) {
                 return Optional.of(usuario);
             }
         }

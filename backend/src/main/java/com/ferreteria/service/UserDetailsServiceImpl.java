@@ -13,17 +13,17 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByNombreAndActivoTrue(username)
-                .orElseThrow(() -> new UsernameNotFoundException("No se encontró usuario con el nombre: " + username));
+        Usuario usuario = usuarioRepository.findByCorreo(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con el correo: " + username));
 
-        return new User(usuario.getNombre(), usuario.getContraseña(),
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name().toUpperCase())));
+        return new User(usuario.getCorreo(), usuario.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name())));
     }
 }

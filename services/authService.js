@@ -1,19 +1,14 @@
 import api from "./apiConfig"
 
-export const login = async (nombre, contraseña) => {
-  // El interceptor de errores en apiConfig.js se encargará de los errores
+export const login = async (username, password) => {
   const response = await api.post("/usuarios/login", {
-    nombre,
-    contraseña,
-  })
-  return response.data
-}
+    username,
+    password,
+  });
+  return response.data;
+};
 
-export const verificarSesion = () => {
-  const usuario = localStorage.getItem("usuario")
-  return usuario ? JSON.parse(usuario) : null
-}
-
-export const logout = () => {
-  localStorage.removeItem("usuario")
-}
+export const seedDatabase = async () => {
+  const response = await api.post("/seed/poblar-base");
+  return response.data;
+};

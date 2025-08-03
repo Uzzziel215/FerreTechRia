@@ -1,33 +1,4 @@
-### ===================================================
-### POBLAR BASE DE DATOS (SEED) - SOLO PARA PRODUCCIÓN
-### ===================================================
-
-# 1. Reemplaza esta URL con la URL de tu backend en Render.
-@baseUrl = https://ferretechria.onrender.com
-
-# 2. Envía esta petición para iniciar sesión como administrador.
-#    VS Code guardará el token de autenticación automáticamente.
-#    @name loginAdmin
-POST {{baseUrl}}/api/usuarios/login
-Content-Type: application/json
-
-{
-  "correo": "admin@ferretechria.com",
-  "contrasena": "admin123"
-}
-
-###
-
-# 3. Una vez que la petición anterior sea exitosa, envía esta
-#    petición para poblar la base de datos.
-#    Usa el token guardado de la petición `loginAdmin`.
-POST {{baseUrl}}/api/seed/poblar-base
-Authorization: Bearer {{loginAdmin.response.body.token}}
-
-
-### ===================================================
 ### PRODUCTOS
-### ===================================================
 GET http://localhost:8080/api/productos
 
 ### Obtener producto por ID
@@ -163,8 +134,8 @@ POST http://localhost:8080/api/usuarios/login
 Content-Type: application/json
 
 {
-  "correo": "admin@ferretechria.com",
-  "contrasena": "admin123"
+  "nombre": "admin",
+  "contraseña": "admin123"
 }
 
 ### Verificar permisos

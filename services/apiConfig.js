@@ -13,6 +13,13 @@ const api = axios.create({
 // Interceptor para requests
 api.interceptors.request.use(
   (config) => {
+    // Asegurarse de que este código solo se ejecute en el cliente
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
+    }
     // Mostrar loading si es necesario
     if (config.showLoading !== false) {
       // Aquí podrías mostrar un loading global

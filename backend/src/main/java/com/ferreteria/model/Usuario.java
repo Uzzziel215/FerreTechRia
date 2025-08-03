@@ -20,9 +20,13 @@ public class Usuario {
     @Column(name = "nombre", nullable = false, unique = true, length = 100)
     private String nombre;
     
+    @NotBlank(message = "El correo es obligatorio")
+    @Column(name = "correo", nullable = false, unique = true, length = 100)
+    private String correo;
+
     @NotBlank(message = "La contraseña es obligatoria")
-    @Column(name = "contraseña", nullable = false, length = 255)
-    private String contraseña;
+    @Column(name = "password", nullable = false, length = 255)
+    private String password;
     
     @NotNull(message = "El rol es obligatorio")
     @Enumerated(EnumType.STRING)
@@ -42,15 +46,16 @@ public class Usuario {
 
     // Enum para roles
     public enum RolUsuario {
-        administrador, vendedor, cajero
+        ADMIN, USER
     }
 
     // Constructores
     public Usuario() {}
 
-    public Usuario(String nombre, String contraseña, RolUsuario rol) {
+    public Usuario(String nombre, String correo, String password, RolUsuario rol) {
         this.nombre = nombre;
-        this.contraseña = contraseña;
+        this.correo = correo;
+        this.password = password;
         this.rol = rol;
     }
 
@@ -61,8 +66,11 @@ public class Usuario {
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getContraseña() { return contraseña; }
-    public void setContraseña(String contraseña) { this.contraseña = contraseña; }
+    public String getCorreo() { return correo; }
+    public void setCorreo(String correo) { this.correo = correo; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
     public RolUsuario getRol() { return rol; }
     public void setRol(RolUsuario rol) { this.rol = rol; }
@@ -78,28 +86,17 @@ public class Usuario {
 
     // Métodos de negocio
     public boolean esAdministrador() {
-        return RolUsuario.administrador.equals(this.rol);
-    }
-
-    public boolean esVendedor() {
-        return RolUsuario.vendedor.equals(this.rol);
-    }
-
-    public boolean esCajero() {
-        return RolUsuario.cajero.equals(this.rol);
+        return RolUsuario.ADMIN.equals(this.rol);
     }
 
     public boolean tienePermiso(String accion) {
-        switch (this.rol) {
-            case administrador:
-                return true; // Administrador tiene todos los permisos
-            case vendedor:
-                return accion.equals("vender") || accion.equals("consultar");
-            case cajero:
-                return accion.equals("vender") || accion.equals("consultar") || accion.equals("devolucion");
-            default:
-                return false;
+        if (this.rol == RolUsuario.ADMIN) {
+            return true;
         }
+        if (this.rol == RolUsuario.USER) {
+            return accion.equals("vender") || accion.equals("consultar");
+        }
+        return false;
     }
 
     @Override

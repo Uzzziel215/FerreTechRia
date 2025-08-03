@@ -10,9 +10,12 @@ public class UsuarioCreacionDTO {
     @Size(min = 3, max = 100, message = "El nombre de usuario debe tener entre 3 y 100 caracteres")
     private String nombre;
 
+    @NotBlank(message = "El correo es obligatorio")
+    private String correo;
+
     @NotBlank(message = "La contraseña es obligatoria")
     @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
-    private String contraseña;
+    private String password;
 
     @NotNull(message = "El rol es obligatorio")
     private Usuario.RolUsuario rol;
@@ -26,12 +29,20 @@ public class UsuarioCreacionDTO {
         this.nombre = nombre;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Usuario.RolUsuario getRol() {

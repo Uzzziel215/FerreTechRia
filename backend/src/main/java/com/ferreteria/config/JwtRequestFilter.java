@@ -1,8 +1,6 @@
-package com.ferreteria.filter;
+package com.ferreteria.config;
 
-import com.ferreteria.service.CustomUserDetailsService;
-import com.ferreteria.util.JwtUtil;
-import io.jsonwebtoken.ExpiredJwtException;
+import com.ferreteria.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +19,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -37,19 +35,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
-            try {
-                username = jwtUtil.getUsernameFromToken(jwt);
-            } catch (IllegalArgumentException e) {
-                System.out.println("No se pudo obtener el token JWT");
-            } catch (ExpiredJwtException e) {
-                System.out.println("El token JWT ha expirado");
-            }
+            username = jwtUtil.extractUsername(jwt);
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(jwt, userDetails)) {
+
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken
